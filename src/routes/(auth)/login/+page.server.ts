@@ -1,7 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 import type { Actions } from './$types'; 
 import jsonwebtoken from 'jsonwebtoken';
-import { invalid } from '@sveltejs/kit';
+import { invalid, redirect } from '@sveltejs/kit';
 
 export const actions: Actions = {
     login: async ({ cookies, request }) => {
@@ -23,6 +23,8 @@ export const actions: Actions = {
             secure: false,
             maxAge: 60 * 60 * 35 * 30
         });
+
+        throw redirect(302, '/dashboard');
     }
 }
 

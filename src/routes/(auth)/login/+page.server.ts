@@ -16,8 +16,6 @@ export const actions: Actions = {
 
         const jwt = jsonwebtoken.sign({username: user?.email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
         
-        console.log(cookies);
-
         cookies.set('sveltekit_auth_app', String(jwt), {
             path: '/',
             httpOnly: true,

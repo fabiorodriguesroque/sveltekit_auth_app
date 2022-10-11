@@ -25,7 +25,6 @@ export const actions: Actions = {
             secure: false,
             maxAge: 60 * 60 * 35 * 30
         });
-        // setCookie(jwt);
     }
 }
 
@@ -45,39 +44,3 @@ async function getUser(email: string) {
 
     return null;
 }
-
-function setCookie(token: string) {
-    return {
-        headers: {
-            'Set-Cookie': [
-                `token=${token}; Max-Age=${15 * 60}; Path=/; ${false} HttpOnly`
-            ]
-        }
-    }
-}
-
-// function createCookie(email: string, value: string) {
-//     const expires = new Date()
-//     expires.setMonth(expires.getMonth()+1) //setting cookie to expire in 6 months
-//     const cookie_options = {httpOnly:true, path:'/',sameSite:true,expires}
-//     // if(!dev){
-//     //     cookie_options.secure = true
-//     //     cookie_options.domain = domain
-//     // }
-//     const cookie = serialize(email,value,cookie_options)
-//     return cookie
-// }
-
-
-        // const cookie = createCookie(
-        //     String(user?.email),
-        //     String(jwt),
-        //     // String(url.hostname)
-        // );
-
-        // return {
-        //     status: 200,
-        //     headers: {
-        //         'set-cookie': cookie,
-        //     }
-        // };

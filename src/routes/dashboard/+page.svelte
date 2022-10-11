@@ -1,0 +1,3 @@
+<div>
+    Private Dashboard
+</div>

@@ -1,7 +1,7 @@
-import { PrismaClient } from '@prisma/client'
 import type { Actions } from './$types'; 
 import jsonwebtoken from 'jsonwebtoken';
 import { invalid, redirect } from '@sveltejs/kit';
+import { db } from '$lib/database';
 
 export const actions: Actions = {
     login: async ({ cookies, request }) => {
@@ -29,18 +29,11 @@ export const actions: Actions = {
 }
 
 async function getUser(email: string) {
-    const prisma = new PrismaClient(); 
-    const user = await prisma.user.findUnique({
-        where: {
-            email: email,
-        }
-    });
+    const user = await db.user.findUnique({where: {email: email}});
 
     if (user) {
         return user;
     }
-
-    prisma.$disconnect;
 
     return null;
 }

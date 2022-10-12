@@ -1,6 +1,7 @@
 import type { Actions } from './$types'; 
-import { PrismaClient } from '@prisma/client';
+import { db } from '$lib/database';
 import { invalid } from '@sveltejs/kit';
+import { hashSync } from 'bcryptjs';
 
 export const actions: Actions = {
     register: async ({ request }) => {
@@ -19,15 +20,13 @@ export const actions: Actions = {
 }
 
 async function createUser(email: string, password: string) {
-    const prisma = new PrismaClient();
+    const passwordHash = hashSync(password, 14);
 
-    await prisma.user.create({
+    await db.user.create({
         data: {
             email: email,
-            password: password, 
+            password: passwordHash, 
             refresh_token: 'eqweqweqw'
         }
     }) 
-
-    await prisma.$disconnect();
 }

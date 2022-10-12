@@ -2,6 +2,8 @@ import type { Actions } from './$types';
 import jsonwebtoken from 'jsonwebtoken';
 import { invalid, redirect } from '@sveltejs/kit';
 import { db } from '$lib/database';
+import { compareSync } from 'bcryptjs';
+
 
 export const actions: Actions = {
     login: async ({ cookies, request }) => {
@@ -11,7 +13,7 @@ export const actions: Actions = {
 
         const user = await getUser(String(email));
 
-        if (user?.password != password )
+        if (! compareSync(String(password), String(user?.password)))
             return invalid(400, {password, incorrect: true});
 
         const jwt = jsonwebtoken.sign({username: user?.email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });

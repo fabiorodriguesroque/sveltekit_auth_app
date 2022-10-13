@@ -12,14 +12,20 @@ export const actions: Actions = {
         const password = data.get('password');
         const password_confirmation = data.get('password-confirmation');
 
+        if (!email || !password || !password_confirmation)
+            return invalid(400, { required: true })
+
+        if (! await validateEmail(String(email)))
+            return invalid(400, { unique: true })
+
         if (password === password_confirmation) {
             createUser(String(email), String(password));
 
-            /**
-             * TO-DO 
-             * improve to not duplicated code see login +page.server.ts
-             */
-            const jwt = jsonwebtoken.sign({username: email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
+        /**
+         * TO-DO 
+         * improve to not duplicated code see login +page.server.ts
+         */
+        const jwt = jsonwebtoken.sign({username: email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
         
             cookies.set('sveltekit_auth_app', String(jwt), {
                 path: '/',
@@ -49,4 +55,16 @@ async function createUser(email: string, password: string) {
             refresh_token: refresh_token,
         }
     }) 
+}
+/**
+ * Validate if email is unique
+ * @param email
+ * @returns {boolean} true if doesn't exists any user with this email
+ */
+async function validateEmail(email: string) {
+    const user = await db.user.findUnique({where: {email: email}});
+
+    if (user) return false; 
+
+    return true;
 }

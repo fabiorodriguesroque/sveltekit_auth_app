@@ -3,6 +3,7 @@ import jsonwebtoken from 'jsonwebtoken';
 import { invalid, redirect } from '@sveltejs/kit';
 import { db } from '$lib/database';
 import { compareSync } from 'bcryptjs';
+import { randomUUID } from 'crypto';
 
 
 export const actions: Actions = {
@@ -16,13 +17,26 @@ export const actions: Actions = {
         if (! compareSync(String(password), String(user?.password)))
             return invalid(400, {password, incorrect: true});
 
+        /**
+         * TO-DO 
+         * improve to not duplicated code see register +page.server.ts
+         */
         const jwt = jsonwebtoken.sign({username: user?.email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
-        
+        const refreshToken = randomUUID();
+
         cookies.set('sveltekit_auth_app', String(jwt), {
             path: '/',
             httpOnly: true,
             sameSite: 'strict',
-            secure: false,
+            secure: false, // improve this -> false if is dev, true if is production
+            maxAge: 60 * 60 * 35 * 30
+        });
+
+        cookies.set('sveltekit_auth_app_refresh_token', String(refreshToken), {
+            path: '/',
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: false, // improve this -> false if is dev, true if is production
             maxAge: 60 * 60 * 35 * 30
         });
 

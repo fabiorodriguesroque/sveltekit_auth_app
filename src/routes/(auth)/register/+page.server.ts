@@ -17,7 +17,7 @@ export const actions: Actions = {
 
             /**
              * TO-DO 
-             * remove duplicated code in login +page.server.ts
+             * improve to not duplicated code see login +page.server.ts
              */
             const jwt = jsonwebtoken.sign({username: email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
         

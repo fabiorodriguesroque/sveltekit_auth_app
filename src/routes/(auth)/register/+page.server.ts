@@ -23,7 +23,7 @@ export const actions: Actions = {
 
         /**
          * TO-DO 
-         * improve to not duplicated code see login +page.server.ts
+         * duplicated code in login +page.server.ts 
          */
         const jwt = jsonwebtoken.sign({username: email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
         
@@ -46,13 +46,13 @@ export const actions: Actions = {
 async function createUser(email: string, password: string) {
     const passwordHash: string = hashSync(password, 14);
     const uuid = randomUUID();
-    const refresh_token = randomUUID();
+    const refreshToken = String(randomUUID());
     await db.user.create({
         data: {
             email: email,
             password: passwordHash, 
             uuid: uuid,
-            refresh_token: refresh_token,
+            refreshToken: refreshToken,
         }
     }) 
 }

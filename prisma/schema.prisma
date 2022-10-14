@@ -14,6 +14,8 @@ model User {
   id Int @id @default(autoincrement())
   email String @unique 
   password String
-  uuid String @unique
-  refresh_token String
+  uuid String @unique 
+  refreshToken String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

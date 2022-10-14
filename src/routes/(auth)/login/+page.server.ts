@@ -19,7 +19,7 @@ export const actions: Actions = {
 
         /**
          * TO-DO 
-         * improve to not duplicated code see register +page.server.ts
+         * duplicated code in register +page.server.ts 
          */
         const jwt = jsonwebtoken.sign({username: user?.email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
         const refreshToken = randomUUID();

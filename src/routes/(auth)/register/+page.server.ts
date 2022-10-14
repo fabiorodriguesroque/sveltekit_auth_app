@@ -19,21 +19,30 @@ export const actions: Actions = {
             return invalid(400, { unique: true })
 
         if (password === password_confirmation) {
-            createUser(String(email), String(password));
+            const user = await createUser(String(email), String(password));
 
         /**
          * TO-DO 
          * duplicated code in login +page.server.ts 
          */
-        const jwt = jsonwebtoken.sign({username: email}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
+        const jwt = jsonwebtoken.sign({uuid: user.uuid}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
+        const refreshToken = randomUUID();
         
-            cookies.set('sveltekit_auth_app', String(jwt), {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'strict',
-                secure: false,
-                maxAge: 60 * 60 * 35 * 30
-            });
+        cookies.set('sveltekit_auth_app', String(jwt), {
+            path: '/',
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: false,
+            maxAge: 60 * 60 * 35 * 30
+        });
+
+        cookies.set('sveltekit_auth_app_refresh_token', String(refreshToken), {
+            path: '/',
+            httpOnly: true,
+            sameSite: 'strict',
+            secure: false, // improve this -> false if is dev, true if is production
+            maxAge: 60 * 60 * 35 * 30
+        });
         } else {
             return invalid(400, {password, passwordsNotMatch: true});
         }
@@ -43,18 +52,27 @@ export const actions: Actions = {
     }
 }
 
+/**
+ * Create user
+ * 
+ * @param email 
+ * @param password 
+ * @returns { object } created user
+ */
 async function createUser(email: string, password: string) {
     const passwordHash: string = hashSync(password, 14);
     const uuid = randomUUID();
     const refreshToken = String(randomUUID());
-    await db.user.create({
+    const user = await db.user.create({
         data: {
             email: email,
             password: passwordHash, 
             uuid: uuid,
             refreshToken: refreshToken,
         }
-    }) 
+    })
+
+    return user; 
 }
 /**
  * Validate if email is unique

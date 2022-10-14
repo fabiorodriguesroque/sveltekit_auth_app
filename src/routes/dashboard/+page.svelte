@@ -1,3 +1,8 @@
+<script lang="ts">
+    import { authUser } from '$lib/store/users'; 
+
+</script>
+
 <div>
-    Private Dashboard
+    Private Dashboard { authUser.name }
 </div>

@@ -1,8 +1,8 @@
 import type { Actions } from './$types'; 
 import { invalid, redirect } from '@sveltejs/kit';
-import { db } from '$lib/database';
 import { compareSync } from 'bcryptjs';
 import { setAuthenticationCookies } from '$lib/cookies';
+import { findByEmail } from '$lib/services/users';
 
 
 export const actions: Actions = {
@@ -11,7 +11,7 @@ export const actions: Actions = {
         const email = data.get('email');
         const password = data.get('password');
 
-        const user = await getUser(String(email));
+        const user = await findByEmail(String(email));
 
         if (! compareSync(String(password), String(user?.password)))
             return invalid(400, {password, incorrect: true});
@@ -23,12 +23,3 @@ export const actions: Actions = {
     }
 }
 
-async function getUser(email: string) {
-    const user = await db.user.findUnique({where: {email: email}});
-
-    if (user) {
-        return user;
-    }
-
-    return null;
-}

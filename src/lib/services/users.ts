@@ -16,3 +16,13 @@ export const findByUuid = async (uuid: string) => {
         }
     })
 }
+
+/**
+ * Get user by email
+ * 
+ * @param email 
+ * @returns 
+ */
+export const findByEmail = async (email: string) => {
+    return await db.user.findUnique({ where: { email: email }})
+}

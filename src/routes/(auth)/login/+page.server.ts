@@ -21,7 +21,7 @@ export const actions: Actions = {
          * TO-DO 
          * duplicated code in register +page.server.ts 
          */
-        const jwt = jsonwebtoken.sign({uuid: user?.uuid}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '3m' });
+        const jwt = jsonwebtoken.sign({uuid: user?.uuid}, import.meta.env.VITE_JWT_PRIVATE_KEY, { expiresIn: '15m' });
         const refreshToken = randomUUID();
 
         cookies.set('sveltekit_auth_app', String(jwt), {

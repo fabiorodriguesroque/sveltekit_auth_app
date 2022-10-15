@@ -1,8 +1,10 @@
 <script lang="ts">
-    import { authUser } from '$lib/store/users'; 
+    import type { PageData } from './$types';
 
+    export let data; 
+    const authUser = data.authUser;
 </script>
 
 <div>
-    Private Dashboard { authUser.name }
+    Private Dashboard - logged in email: { authUser.email }
 </div>

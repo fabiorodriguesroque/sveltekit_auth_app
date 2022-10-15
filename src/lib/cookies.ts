@@ -26,3 +26,8 @@ export const setAuthenticationCookies = (cookies: Cookies, uuid: string) => {
         maxAge: 60 * 60 * 35 * 30
     }); 
 }
+
+export const deleteAuthenticationCookies = async (cookies: Cookies,) => {
+    cookies.delete('sveltekit_auth_app');
+    cookies.delete('sveltekit_auth_app_refresh_token');
+}

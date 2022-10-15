@@ -1,3 +1,3 @@
 export const variables = {
-   // return variables here  
+   private_key: import.meta.env.VITE_JWT_PRIVATE_KEY,
 }

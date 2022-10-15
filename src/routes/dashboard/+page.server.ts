@@ -2,7 +2,7 @@ import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
 import jsonwebtoken from 'jsonwebtoken';
 import { findByUuid } from '$lib/services/users';
-import type { JwtPayload } from '$lib/utils';
+import type { JwtPayload } from '$lib/utils'; 
 
 export const load: PageServerLoad = ({cookies}) => {
     const token = cookies.get('sveltekit_auth_app');

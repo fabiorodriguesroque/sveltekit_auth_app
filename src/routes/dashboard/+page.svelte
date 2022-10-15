@@ -1,7 +1,5 @@
-<script lang="ts">
-    import type { PageData } from './$types';
-
-    export let data; 
+<script>
+    export let data
     const authUser = data.authUser;
 </script>
 
